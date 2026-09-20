@@ -41,13 +41,47 @@
                 @foreach ($media as $item)
                     <article class="media-card">
                         <img src="{{ $item->url }}" alt="{{ $item->name }}">
+
                         <div class="body">
                             <h3>{{ $item->name }}</h3>
                             <p>
                                 {{ $item->mime_type }} ·
                                 {{ number_format(($item->size ?? 0) / 1024, 1) }} KB
                             </p>
+
                             <a href="{{ $item->url }}" target="_blank" rel="noopener">Ver archivo</a>
+
+                            <details>
+                                <summary>Reemplazar imagen</summary>
+
+                                <form
+                                    action="{{ route('admin.media.update', $item) }}"
+                                    method="POST"
+                                    enctype="multipart/form-data"
+                                >
+                                    @csrf
+                                    @method('PUT')
+
+                                    <input
+                                        type="file"
+                                        name="file"
+                                        accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
+                                        required
+                                    >
+                                    <button type="submit">Reemplazar</button>
+                                </form>
+                            </details>
+
+                            <form
+                                action="{{ route('admin.media.destroy', $item) }}"
+                                method="POST"
+                                onsubmit="return confirm('¿Eliminar esta imagen? También se borrará el archivo del servidor.');"
+                            >
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit" class="danger">Eliminar</button>
+                            </form>
                         </div>
                     </article>
                 @endforeach

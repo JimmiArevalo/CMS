@@ -7,12 +7,15 @@
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; font-family: Arial, sans-serif; background: #f4f6f8; color: #1f2937; }
-        header { background: #022766; color: #fff; padding: 16px 24px; }
+        header { background: #022766; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
         header a { color: #fff; text-decoration: none; font-weight: bold; }
+        header form { margin: 0; }
+        header button { margin: 0; background: #fff; color: #022766; padding: 6px 12px; }
         main { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
         .card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+        .login-card { max-width: 420px; margin: 40px auto; }
         label { display: block; margin: 12px 0 4px; font-weight: bold; }
-        input[type=text], input[type=file] { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; }
+        input[type=text], input[type=email], input[type=password], input[type=file] { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; }
         button { margin-top: 16px; background: #022766; color: #fff; border: 0; padding: 10px 18px; border-radius: 8px; cursor: pointer; }
         .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; }
         .alert-success { background: #dcfce7; color: #166534; }
@@ -24,11 +27,23 @@
         .media-card .body { padding: 12px; }
         .media-card h3 { margin: 0 0 4px; font-size: 16px; }
         .media-card p { margin: 0 0 8px; font-size: 13px; color: #64748b; }
+        .media-card details { margin-top: 10px; font-size: 14px; }
+        .media-card summary { cursor: pointer; color: #022766; }
+        .media-card details form { margin-top: 8px; }
+        .media-card input[type=file] { font-size: 12px; }
+        button.danger { background: #b91c1c; margin-top: 10px; }
     </style>
 </head>
 <body>
     <header>
         <a href="{{ route('admin.media.index') }}">{{ config('app.name') }} · Panel</a>
+
+        @auth
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        @endauth
     </header>
 
     <main>
