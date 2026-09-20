@@ -10,6 +10,7 @@
     <header>
         <a href="{{ route('home') }}">{{ config('app.name') }}</a>
         <nav>
+            <a href="{{ route('contact.show') }}">Contacto</a>
             <a href="{{ route('login') }}">Administración</a>
         </nav>
     </header>

@@ -3,11 +3,20 @@
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 // Página principal (pública).
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Contacto (público).
+Route::get('/contacto', [ContactController::class, 'show'])->name('contact.show');
+
+// Máximo 5 envíos por minuto por visitante, para evitar abuso del formulario.
+Route::post('/contacto', [ContactController::class, 'send'])
+    ->middleware('throttle:5,1')
+    ->name('contact.send');
 
 // Login: solo para visitantes sin sesión.
 Route::middleware('guest')->group(function () {
