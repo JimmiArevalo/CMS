@@ -1,0 +1,66 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f4f6f8; color: #1f2937; }
+
+/* Encabezado */
+header { background: #022766; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+header a { color: #fff; text-decoration: none; font-weight: bold; }
+header nav { display: flex; gap: 20px; align-items: center; }
+header form { margin: 0; }
+header button { margin: 0; background: #fff; color: #022766; padding: 6px 12px; }
+main { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
+footer { text-align: center; color: #64748b; font-size: 13px; padding: 24px; }
+
+/* Tarjetas y formularios */
+.card { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.login-card { max-width: 420px; margin: 40px auto; }
+label { display: block; margin: 12px 0 4px; font-weight: bold; }
+input[type=text], input[type=email], input[type=password], input[type=file], textarea { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; font-family: inherit; }
+button { margin-top: 16px; background: #022766; color: #fff; border: 0; padding: 10px 18px; border-radius: 8px; cursor: pointer; }
+button.danger { background: #b91c1c; margin-top: 10px; }
+.btn { display: inline-block; background: #022766; color: #fff; padding: 8px 14px; border-radius: 8px; text-decoration: none; }
+.check { display: flex; align-items: center; gap: 8px; font-weight: normal; }
+.check input { width: auto; }
+.muted { color: #64748b; font-size: 13px; }
+.page-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+
+/* Alertas */
+.alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; }
+.alert-success { background: #dcfce7; color: #166534; }
+.alert-error { background: #fee2e2; color: #991b1b; }
+.alert ul { margin: 0; padding-left: 20px; }
+
+/* Biblioteca multimedia */
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.media-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.media-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.media-card .body { padding: 12px; }
+.media-card h3 { margin: 0 0 4px; font-size: 16px; }
+.media-card p { margin: 0 0 8px; font-size: 13px; color: #64748b; }
+.media-card details { margin-top: 10px; font-size: 14px; }
+.media-card summary { cursor: pointer; color: #022766; }
+.media-card details form { margin-top: 8px; }
+.media-card input[type=file] { font-size: 12px; }
+
+/* Selector de imagen en noticias */
+.media-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+.picker-item { border: 2px solid #e2e8f0; border-radius: 10px; padding: 6px; text-align: center; font-weight: normal; margin: 0; cursor: pointer; background: #fff; }
+.picker-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; display: block; }
+.picker-item span { font-size: 12px; display: block; margin-top: 4px; }
+
+/* Tabla de noticias */
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; }
+th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+td img { width: 70px; height: 50px; object-fit: cover; border-radius: 6px; display: block; }
+.badge { padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+.badge-on { background: #dcfce7; color: #166534; }
+.badge-off { background: #e2e8f0; color: #475569; }
+.actions-row { display: flex; gap: 12px; align-items: center; }
+.actions-row form { margin: 0; }
+.actions-row button { margin: 0; padding: 6px 12px; }
+
+/* Página pública */
+.news-card { background: #fff; border-radius: 12px; overflow: hidden; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.news-card img { width: 100%; max-height: 360px; object-fit: cover; display: block; }
+.news-body { padding: 20px; }
+.news-body h2 { margin: 0 0 8px; }
+.news-body .lead { font-size: 18px; color: #475569; }

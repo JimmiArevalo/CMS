@@ -3,27 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Panel') - {{ config('app.name') }}</title>
+    <title>@yield('title', 'Inicio') - {{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('css/cms.css') }}">
 </head>
 <body>
     <header>
+        <a href="{{ route('home') }}">{{ config('app.name') }}</a>
         <nav>
-            <a href="{{ route('admin.media.index') }}">{{ config('app.name') }} · Panel</a>
-
-            @auth
-                <a href="{{ route('admin.media.index') }}">Multimedia</a>
-                <a href="{{ route('admin.news.index') }}">Noticias</a>
-                <a href="{{ route('home') }}" target="_blank" rel="noopener">Ver sitio</a>
-            @endauth
+            <a href="{{ route('login') }}">Administración</a>
         </nav>
-
-        @auth
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit">Cerrar sesión</button>
-            </form>
-        @endauth
     </header>
 
     <main>
@@ -43,5 +31,7 @@
 
         @yield('content')
     </main>
+
+    <footer>&copy; {{ date('Y') }} {{ config('app.name') }}</footer>
 </body>
 </html>
