@@ -79,4 +79,36 @@ class AuthController extends Controller
             'message' => 'Sesión cerrada correctamente.',
         ]);
     }
+
+    //Register
+    public function register(Request $request): JsonResponse
+{
+    $data = $request->validate([
+        'name'     => ['required', 'string', 'max:255'],
+        'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ], [
+        'email.unique' => 'Ese correo ya está registrado.',
+        'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+        'password.confirmed' => 'Las contraseñas no coinciden.',
+    ]);
+
+    $user = User::create([
+        'name'     => $data['name'],
+        'email'    => $data['email'],
+        'password' => Hash::make($data['password']),
+    ]);
+
+    $token = $user->createToken('postman', ['*'], now()->addHours(8));
+
+    return response()->json([
+        'token'      => $token->plainTextToken,
+        'token_type' => 'Bearer',
+        'user'       => [
+            'id'    => $user->id,
+            'name'  => $user->name,
+            'email' => $user->email,
+        ],
+    ], 201); // 201 Created
+}
 }

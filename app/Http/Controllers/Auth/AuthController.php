@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 class AuthController extends Controller
 {
     /**
@@ -57,4 +60,39 @@ class AuthController extends Controller
 
         return redirect()->route('login');
     }
+
+    //Register
+    public function showRegister(): View
+{
+    return view('auth.register');
+}
+
+/**
+ * Valida los datos, crea el usuario e inicia sesión automáticamente.
+ */
+public function register(Request $request): RedirectResponse
+{
+    $data = $request->validate([
+        'name'     => ['required', 'string', 'max:255'],
+        'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ], [
+        'email.unique'       => 'Ese correo ya está registrado.',
+        'password.min'       => 'La contraseña debe tener al menos 8 caracteres.',
+        'password.confirmed' => 'Las contraseñas no coinciden.',
+    ]);
+
+    $user = User::create([
+        'name'     => $data['name'],
+        'email'    => $data['email'],
+        'password' => Hash::make($data['password']),
+    ]);
+
+    Auth::login($user);
+
+    // Nuevo ID de sesión, igual que en login().
+    $request->session()->regenerate();
+
+    return redirect()->route('admin.media.index');
+}
 }
