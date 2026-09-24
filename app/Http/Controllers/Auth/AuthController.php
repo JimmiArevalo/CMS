@@ -82,17 +82,14 @@ public function register(Request $request): RedirectResponse
         'password.confirmed' => 'Las contraseñas no coinciden.',
     ]);
 
-    $user = User::create([
+    User::create([
         'name'     => $data['name'],
         'email'    => $data['email'],
         'password' => Hash::make($data['password']),
     ]);
 
-    Auth::login($user);
-
-    // Nuevo ID de sesión, igual que en login().
-    $request->session()->regenerate();
-
-    return redirect()->route('admin.media.index');
+    return redirect()
+        ->route('admin.media.index')
+        ->with('success', 'Usuario creado correctamente.');
 }
 }

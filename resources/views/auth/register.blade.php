@@ -6,7 +6,7 @@
     <section class="card login-card">
         <h1>Crear cuenta</h1>
 
-        <form action="{{ route('register.attempt') }}" method="POST">
+        <form action="{{ route('admin.register.attempt') }}" method="POST">
             @csrf
 
             <label for="name">Nombre completo</label>
@@ -37,6 +37,5 @@
             <button type="submit">Registrarme</button>
         </form>
 
-        <p class="muted">¿Ya tienes cuenta? <a href="{{ route('login') }}">Haz clic aquí</a></p>
-    </section>
+        <p class="muted"><a href="{{ route('admin.media.index') }}">← Volver al panel</a></p>    </section>
 @endsection

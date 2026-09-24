@@ -14,6 +14,7 @@
             @auth
                 <a href="{{ route('admin.media.index') }}">Multimedia</a>
                 <a href="{{ route('admin.news.index') }}">Noticias</a>
+                <a href="{{ route('admin.register') }}">Nuevo usuario</a>
                 <a href="{{ route('home') }}" target="_blank" rel="noopener">Ver sitio</a>
             @endauth
         </nav>
