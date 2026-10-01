@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Inicio') - {{ config('app.name', 'ANIMEVERSE') }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{{ asset('css/cms.css') }}">
 </head>
 <body>
@@ -26,9 +28,9 @@
             <a href="{{ route('contact.show') }}" class="{{ request()->routeIs('contact.*') ? 'active' : '' }}">Contacto</a>
 
             @auth
-                <a href="{{ route('admin.dashboard') }}" style="background: var(--accent); color: #000; font-weight: bold;">Panel Admin</a>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-accent btn-sm" style="border-radius: 20px;">⚙ Panel Admin</a>
             @else
-                <a href="{{ route('login') }}" style="border: 1px solid var(--border);">Ingresar</a>
+                <a href="{{ route('login') }}" class="btn btn-outline btn-sm" style="border-radius: 20px;">Ingresar</a>
             @endauth
         </nav>
 
@@ -57,9 +59,42 @@
     </main>
 
     <footer>
-        <p><strong>{{ config('app.name', 'ANIMEVERSE') }}</strong> — Tu portal definitivo de noticias y catálogo de anime.</p>
-        <p>&copy; {{ date('Y') }} {{ config('app.name', 'ANIMEVERSE') }} · Todos los derechos reservados.</p>
+        <p style="font-size:1.5rem; margin-bottom:8px;">⚡ <strong>{{ config('app.name', 'ANIMEVERSE') }}</strong></p>
+        <p>Tu portal definitivo de noticias y catálogo de anime.</p>
+        <p style="margin-top:12px;">© {{ date('Y') }} {{ config('app.name', 'ANIMEVERSE') }} · Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        // ── Drag-to-scroll carousel ──────────────────────────
+        document.querySelectorAll('.carousel-track-container').forEach(container => {
+            let isDown = false, startX, scrollLeft;
+
+            container.addEventListener('mousedown', e => {
+                isDown = true;
+                container.style.cursor = 'grabbing';
+                startX     = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('mouseleave', () => { isDown = false; container.style.cursor = 'grab'; });
+            container.addEventListener('mouseup',    () => { isDown = false; container.style.cursor = 'grab'; });
+            container.addEventListener('mousemove',  e => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x    = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.6;
+                container.scrollLeft = scrollLeft - walk;
+            });
+        });
+
+        // ── Carousel arrow buttons ───────────────────────────
+        document.querySelectorAll('.carousel-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const container = btn.closest('.carousel-wrapper').querySelector('.carousel-track-container');
+                const dir       = btn.dataset.dir === 'prev' ? -1 : 1;
+                container.scrollBy({ left: dir * 600, behavior: 'smooth' });
+            });
+        });
+    </script>
 </body>
-</html>
 </html>

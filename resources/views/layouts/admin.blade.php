@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Panel') - {{ config('app.name', 'ANIMEVERSE') }} Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="{{ asset('css/cms.css') }}">
 </head>
 <body class="admin-body">
@@ -24,7 +26,7 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 12px;">
-            <a href="{{ route('home') }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline" style="border-color: var(--muted); color: var(--text);">
+            <a href="{{ route('home') }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
                 Ver sitio ↗
             </a>
 
@@ -55,5 +57,4 @@
         @yield('content')
     </main>
 </body>
-</html>
 </html>
