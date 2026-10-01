@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anime;
+use App\Models\Category;
 use App\Models\Media;
 use App\Models\News;
 use Illuminate\Http\RedirectResponse;
@@ -14,106 +16,89 @@ class NewsController extends Controller
 {
     public function index(): View
     {
-        // with('media') carga las imágenes en una sola consulta extra.
-        $news = News::with('media')->latest()->get();
-
+        $news = News::with(['media', 'category'])->latest()->paginate(20);
         return view('admin.news.index', compact('news'));
     }
 
     public function create(): View
     {
         return view('admin.news.create', [
-            'media' => Media::latest()->get(),
+            'media'      => Media::latest()->get(),
+            'categories' => Category::orderBy('name')->get(),
+            'animes'     => Anime::orderBy('title')->get(),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validateNews($request);
+        $status    = $validated['status'] ?? 'borrador';
 
         News::create([
-            'title'     => $validated['title'],
-            'slug'      => $this->uniqueSlug($validated['title']),
-            'excerpt'   => $validated['excerpt'] ?? null,
-            'content'   => $validated['content'],
-            'media_id'  => $validated['media_id'] ?? null,
-            'published' => $request->boolean('published'),
+            'title'        => $validated['title'],
+            'slug'         => News::uniqueSlug($validated['title']),
+            'excerpt'      => $validated['excerpt'] ?? null,
+            'content'      => $validated['content'],
+            'media_id'     => $validated['media_id'] ?? null,
+            'category_id'  => $validated['category_id'] ?? null,
+            'anime_id'     => $validated['anime_id'] ?? null,
+            'author'       => $validated['author'] ?? auth()->user()->name,
+            'status'       => $status,
+            'published'    => $status === 'publicada',
+            'published_at' => $status === 'publicada' ? now() : null,
         ]);
 
-        return redirect()
-            ->route('admin.news.index')
-            ->with('success', 'Noticia creada correctamente.');
+        return redirect()->route('admin.news.index')->with('success', 'Noticia creada correctamente.');
     }
 
     public function edit(News $news): View
     {
         return view('admin.news.edit', [
-            'news'  => $news,
-            'media' => Media::latest()->get(),
+            'news'       => $news,
+            'media'      => Media::latest()->get(),
+            'categories' => Category::orderBy('name')->get(),
+            'animes'     => Anime::orderBy('title')->get(),
         ]);
     }
 
     public function update(Request $request, News $news): RedirectResponse
     {
         $validated = $this->validateNews($request);
+        $status    = $validated['status'] ?? 'borrador';
 
-        // El slug no cambia al editar, para no romper enlaces existentes.
         $news->update([
-            'title'     => $validated['title'],
-            'excerpt'   => $validated['excerpt'] ?? null,
-            'content'   => $validated['content'],
-            'media_id'  => $validated['media_id'] ?? null,
-            'published' => $request->boolean('published'),
+            'title'        => $validated['title'],
+            'excerpt'      => $validated['excerpt'] ?? null,
+            'content'      => $validated['content'],
+            'media_id'     => $validated['media_id'] ?? null,
+            'category_id'  => $validated['category_id'] ?? null,
+            'anime_id'     => $validated['anime_id'] ?? null,
+            'author'       => $validated['author'] ?? $news->author,
+            'status'       => $status,
+            'published'    => $status === 'publicada',
+            'published_at' => $status === 'publicada' && ! $news->published_at ? now() : $news->published_at,
         ]);
 
-        return redirect()
-            ->route('admin.news.index')
-            ->with('success', 'Noticia actualizada correctamente.');
+        return redirect()->route('admin.news.index')->with('success', 'Noticia actualizada correctamente.');
     }
 
     public function destroy(News $news): RedirectResponse
     {
-        // Solo se elimina la noticia. La imagen sigue en la biblioteca
-        // porque otras noticias podrían estar usándola.
         $news->delete();
-
-        return redirect()
-            ->route('admin.news.index')
-            ->with('success', 'Noticia eliminada correctamente.');
+        return redirect()->route('admin.news.index')->with('success', 'Noticia eliminada correctamente.');
     }
 
     private function validateNews(Request $request): array
     {
         return $request->validate([
-            'title'     => ['required', 'string', 'max:255'],
-            'excerpt'   => ['nullable', 'string', 'max:500'],
-            'content'   => ['required', 'string', 'max:20000'],
-            'media_id'  => ['nullable', 'integer', 'exists:media,id'],
-            'published' => ['nullable', 'boolean'],
-        ], [
-            'title.required'   => 'El título es obligatorio.',
-            'title.max'        => 'El título no puede superar los 255 caracteres.',
-            'excerpt.max'      => 'El resumen no puede superar los 500 caracteres.',
-            'content.required' => 'El contenido es obligatorio.',
-            'content.max'      => 'El contenido no puede superar los 20000 caracteres.',
-            'media_id.exists'  => 'La imagen seleccionada no existe.',
-            'media_id.integer' => 'La imagen seleccionada no es válida.',
+            'title'       => ['required', 'string', 'max:255'],
+            'excerpt'     => ['nullable', 'string', 'max:500'],
+            'content'     => ['required', 'string', 'max:20000'],
+            'media_id'    => ['nullable', 'integer', 'exists:media,id'],
+            'category_id' => ['nullable', 'integer', 'exists:categories,id'],
+            'anime_id'    => ['nullable', 'integer', 'exists:animes,id'],
+            'author'      => ['nullable', 'string', 'max:100'],
+            'status'      => ['required', 'in:borrador,publicada,archivada'],
         ]);
-    }
-
-    /**
-     * Genera un slug único a partir del título (mi-titulo, mi-titulo-2...).
-     */
-    private function uniqueSlug(string $title): string
-    {
-        $base = Str::slug($title) ?: 'noticia';
-        $slug = $base;
-        $i = 2;
-
-        while (News::where('slug', $slug)->exists()) {
-            $slug = $base . '-' . $i++;
-        }
-
-        return $slug;
     }
 }
