@@ -1,18 +1,19 @@
 @extends('layouts.admin')
 
-@section('title', 'Editar noticia')
+@section('title', 'Editar Noticia')
 
 @section('content')
-    <h1>Editar noticia</h1>
+    <div class="page-head">
+        <h1>Editar Noticia: {{ Str::limit($news->title, 40) }}</h1>
+        <a href="{{ route('admin.news.index') }}" class="btn btn-outline btn-sm">← Volver al listado</a>
+    </div>
 
-    <section class="card">
+    <section class="form-card">
         <form action="{{ route('admin.news.update', $news) }}" method="POST">
             @csrf
             @method('PUT')
-
             @include('admin.news._form', ['news' => $news])
-
-            <button type="submit">Guardar cambios</button>
         </form>
     </section>
+@endsection
 @endsection
