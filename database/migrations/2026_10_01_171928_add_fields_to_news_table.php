@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('news', function (Blueprint $table) {
-            //
+            $table->foreignId('category_id')->nullable()->after('media_id')->constrained('categories')->nullOnDelete();
+            $table->foreignId('anime_id')->nullable()->after('category_id')->constrained('animes')->nullOnDelete();
+            $table->string('author')->nullable()->after('anime_id');
+            $table->string('status')->default('borrador')->after('author');
+            $table->timestamp('published_at')->nullable()->after('status');
         });
     }
 
@@ -22,7 +26,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('news', function (Blueprint $table) {
-            //
+            $table->dropConstrainedForeignId('category_id');
+            $table->dropConstrainedForeignId('anime_id');
+            $table->dropColumn(['author', 'status', 'published_at']);
         });
     }
 };

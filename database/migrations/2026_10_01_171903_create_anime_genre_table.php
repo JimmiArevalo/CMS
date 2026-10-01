@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('anime_genre', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreignId('anime_id')->constrained('animes')->cascadeOnDelete();
+            $table->foreignId('genre_id')->constrained('genres')->cascadeOnDelete();
+            $table->primary(['anime_id', 'genre_id']);
         });
     }
 

@@ -45,7 +45,7 @@ class AuthController extends Controller
         // Crea un nuevo ID de sesión para evitar la fijación de sesión.
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.media.index'));
+        return redirect()->intended(route('admin.dashboard'));
     }
 
     /**
@@ -89,7 +89,7 @@ public function register(Request $request): RedirectResponse
     ]);
 
     return redirect()
-        ->route('admin.media.index')
+        ->route('admin.dashboard')
         ->with('success', 'Usuario creado correctamente.');
 }
 }

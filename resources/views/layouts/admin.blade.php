@@ -18,7 +18,7 @@
                     <a href="{{ route('admin.anime.index') }}" class="{{ request()->routeIs('admin.anime.*') ? 'active' : '' }}">Animes</a>
                     <a href="{{ route('admin.genre.index') }}" class="{{ request()->routeIs('admin.genre.*') ? 'active' : '' }}">Géneros</a>
                     <a href="{{ route('admin.media.index') }}" class="{{ request()->routeIs('admin.media.*') ? 'active' : '' }}">Multimedia</a>
-                    <a href="{{ route('admin.register') }}" class="{{ request()->routeIs('admin.register') ? 'active' : '' }}">+ Usuario</a>
+                    <a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">+ Usuario</a>
                 </nav>
             @endauth
         </div>
