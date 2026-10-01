@@ -64,3 +64,18 @@ td img { width: 70px; height: 50px; object-fit: cover; border-radius: 6px; displ
 .news-body { padding: 20px; }
 .news-body h2 { margin: 0 0 8px; }
 .news-body .lead { font-size: 18px; color: #475569; }
+
+     .hero {
+       position: relative;
+       overflow: hidden;
+     }
+
+     .hero > div:first-child {
+       pointer-events: none;
+       z-index: 0;
+     }
+
+     .hero-body {
+       position: relative;
+       z-index: 1;
+     }
