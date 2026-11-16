@@ -51,11 +51,13 @@
         <div class="cards-grid">
             @foreach ($recentNews as $item)
                 <article class="card-item">
-                    @if ($item->media)
-                        <img src="{{ $item->media->url }}" alt="{{ $item->title }}" class="card-img">
-                    @else
-                        <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2rem;">📰</div>
-                    @endif
+                    <a href="{{ route('news.show', $item->slug) }}" style="display:block; text-decoration:none;">
+                        @if ($item->media)
+                            <img src="{{ $item->media->url }}" alt="{{ $item->title }}" class="card-img">
+                        @else
+                            <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2rem;">📰</div>
+                        @endif
+                    </a>
 
                     <div class="card-body">
                         @if ($item->category)
@@ -90,11 +92,13 @@
                 <div class="carousel-track">
                     @foreach ($trending as $anime)
                         <article class="card-item">
-                            @if ($anime->media)
-                                <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
-                            @else
-                                <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2.5rem;">🎌</div>
-                            @endif
+                            <a href="{{ route('anime.show', $anime->slug) }}" style="display:block; text-decoration:none;">
+                                @if ($anime->media)
+                                    <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
+                                @else
+                                    <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2.5rem;">🎌</div>
+                                @endif
+                            </a>
 
                             <div class="card-body">
                                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
@@ -143,11 +147,13 @@
         <div class="cards-grid">
             @foreach ($upcoming as $anime)
                 <article class="card-item">
-                    @if ($anime->media)
-                        <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
-                    @else
-                        <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2.5rem;">📅</div>
-                    @endif
+                    <a href="{{ route('anime.show', $anime->slug) }}" style="display:block; text-decoration:none;">
+                        @if ($anime->media)
+                            <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
+                        @else
+                            <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2.5rem;">📅</div>
+                        @endif
+                    </a>
 
                     <div class="card-body">
                         <div class="card-category">
@@ -198,11 +204,13 @@
                 <div class="carousel-track">
                     @foreach ($classics as $anime)
                         <article class="card-item">
-                            @if ($anime->media)
-                                <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
-                            @else
-                                <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2.5rem;">📜</div>
-                            @endif
+                            <a href="{{ route('anime.show', $anime->slug) }}" style="display:block; text-decoration:none;">
+                                @if ($anime->media)
+                                    <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
+                                @else
+                                    <div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:2.5rem;">📜</div>
+                                @endif
+                            </a>
 
                             <div class="card-body">
                                 <div class="card-category">Año {{ $anime->year ?? 'Clásico' }}</div>

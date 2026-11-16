@@ -28,9 +28,11 @@ Route::get('/animes/{slug}', [PublicAnimeController::class, 'show'])->name('anim
 Route::get('/generos', [PublicAnimeController::class, 'genres'])->name('genre.index');
 Route::get('/generos/{slug}', [PublicAnimeController::class, 'byGenre'])->name('genre.show');
 
-// Noticias (público).
+// Noticias (público) - disponible bajo /news y /noticias
 Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
+Route::get('/noticias', [PublicNewsController::class, 'index']);
+Route::get('/noticias/{slug}', [PublicNewsController::class, 'show']);
 
 // Máximo 5 envíos por minuto por visitante, para evitar abuso del formulario.
 Route::post('/contacto', [ContactController::class, 'send'])

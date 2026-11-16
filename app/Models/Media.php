@@ -31,8 +31,16 @@ class Media extends Model
      */
     protected function url(): Attribute
     {
-        return Attribute::get(
-            fn () => Storage::disk('public')->url($this->path)
-        );
+        return Attribute::get(function () {
+            if (empty($this->path)) {
+                return null;
+            }
+
+            if (str_starts_with($this->path, 'http://') || str_starts_with($this->path, 'https://')) {
+                return $this->path;
+            }
+
+            return '/storage/' . ltrim($this->path, '/');
+        });
     }
 }

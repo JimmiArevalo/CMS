@@ -19,13 +19,15 @@
         <div class="cards-grid">
             @foreach ($animes as $anime)
                 <article class="card-item">
-                    @if ($anime->media)
-                        <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
-                    @else
-                        <div class="card-img" style="display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8rem;">
-                            Sin póster
-                        </div>
-                    @endif
+                    <a href="{{ route('anime.show', $anime->slug) }}" style="display:block; text-decoration:none;">
+                        @if ($anime->media)
+                            <img src="{{ $anime->media->url }}" alt="{{ $anime->title }}" class="card-img">
+                        @else
+                            <div class="card-img" style="display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8rem;">
+                                Sin póster
+                            </div>
+                        @endif
+                    </a>
 
                     <div class="card-body">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">

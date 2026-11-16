@@ -65,35 +65,73 @@
     </footer>
 
     <script>
-        // ── Drag-to-scroll carousel ──────────────────────────
+        // ── Drag-to-scroll carousel con soporte para clics ───
         document.querySelectorAll('.carousel-track-container').forEach(container => {
-            let isDown = false, startX, scrollLeft;
+            let isDown = false, startX, scrollLeft, hasDragged = false;
 
             container.addEventListener('mousedown', e => {
                 isDown = true;
+                hasDragged = false;
                 container.style.cursor = 'grabbing';
                 startX     = e.pageX - container.offsetLeft;
                 scrollLeft = container.scrollLeft;
             });
 
-            container.addEventListener('mouseleave', () => { isDown = false; container.style.cursor = 'grab'; });
-            container.addEventListener('mouseup',    () => { isDown = false; container.style.cursor = 'grab'; });
-            container.addEventListener('mousemove',  e => {
+            container.addEventListener('mouseleave', () => { 
+                isDown = false; 
+                container.style.cursor = 'grab'; 
+            });
+
+            container.addEventListener('mouseup', () => { 
+                isDown = false; 
+                container.style.cursor = 'grab'; 
+            });
+
+            container.addEventListener('mousemove', e => {
                 if (!isDown) return;
+                const x = e.pageX - container.offsetLeft;
+                if (Math.abs(x - startX) > 6) {
+                    hasDragged = true;
+                }
                 e.preventDefault();
-                const x    = e.pageX - container.offsetLeft;
                 const walk = (x - startX) * 1.6;
                 container.scrollLeft = scrollLeft - walk;
             });
+
+            // Evita navegación accidental si el usuario estaba arrastrando el carrusel
+            container.addEventListener('click', e => {
+                if (hasDragged) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
         });
 
-        // ── Carousel arrow buttons ───────────────────────────
+        // ── Botones de navegación del carrusel ───────────────
         document.querySelectorAll('.carousel-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const container = btn.closest('.carousel-wrapper').querySelector('.carousel-track-container');
                 const dir       = btn.dataset.dir === 'prev' ? -1 : 1;
                 container.scrollBy({ left: dir * 600, behavior: 'smooth' });
             });
+        });
+
+        // ── Tarjetas interactivas: toda la tarjeta o póster abre el detalle ──
+        document.querySelectorAll('.card-item').forEach(card => {
+            const mainLink = card.querySelector('.card-title a');
+            if (mainLink) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', e => {
+                    // Si se hizo clic en un enlace específico dentro (ej. tag de género), no interceptar
+                    const clickedLink = e.target.closest('a');
+                    if (clickedLink && clickedLink !== mainLink) {
+                        return;
+                    }
+                    if (!e.target.closest('button')) {
+                        window.location.href = mainLink.href;
+                    }
+                });
+            }
         });
     </script>
 </body>

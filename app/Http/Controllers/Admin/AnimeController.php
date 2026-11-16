@@ -12,9 +12,13 @@ use Illuminate\View\View;
 
 class AnimeController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $animes = Anime::with(['genres', 'media'])->latest()->paginate(20);
+        $query = Anime::with(['genres', 'media']);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        $animes = $query->latest()->paginate(20);
         return view('admin.anime.index', compact('animes'));
     }
 
