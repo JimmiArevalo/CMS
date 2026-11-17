@@ -1,0 +1,26 @@
+{
+  "name": "cms-project",
+  "type": "laravel",
+  "runtime": "php-8.5",
+  "entrypoint": "public/index.php",
+  "build": {
+    "commands": [
+      "composer install --no-dev --optimize-autoloader",
+      "npm ci",
+      "npm run build",
+      "php artisan storage:link",
+      "php artisan config:cache",
+      "php artisan route:cache",
+      "php artisan view:cache"
+    ]
+  },
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://<tu-dominio>.antigravity.app",
+    "CACHE_DRIVER": "file",
+    "SESSION_DRIVER": "file",
+    "QUEUE_CONNECTION": "sync"
+  }
+}
+
