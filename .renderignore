@@ -1,0 +1,15 @@
+# Files and directories to ignore for Render builds
+node_modules/
+vendor/
+.env
+.env.example
+.storage/
+storage/logs/
+.storage/
+/.git
+/.github
+/.vscode
+.DS_Store
+.idea
+*.log
+*.sql

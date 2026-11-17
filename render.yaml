@@ -21,7 +21,7 @@ services:
     buildCommand: |
       composer install --no-dev --optimize-autoloader && \
       npm ci && npm run build
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    startCommand: php-fpm
     dockerfilePath: Dockerfile
     envVars:
       # Laravel basics
