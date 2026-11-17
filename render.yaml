@@ -1,0 +1,53 @@
+services:
+  # ---------- Base de datos (MySQL) ----------
+  - type: pserv
+    name: db
+    env: mysql
+    plan: starter   # 0.5 GB, 10 GB storage (suficiente para desarrollo)
+    region: oregon   # elige la región que prefieras
+    databases:
+      - name: cmsdb
+        user: cms_user
+        password: cms_pass
+        engine: mysql
+        version: "8.0"
+
+  # ---------- Aplicación web ----------
+  - type: web
+    name: cms-project
+    env: docker
+    plan: starter   # 0.5 GB RAM, 1 CPU (upgrade cuando recibas tráfico)
+    region: oregon
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader && \
+      npm ci && npm run build
+    startCommand: php-fpm
+    dockerfilePath: Dockerfile
+    envVars:
+      # Laravel basics
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stderr
+
+      # Database connection (Render los enlaza automáticamente)
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromService: db
+      - key: DB_DATABASE
+        fromService: db
+      - key: DB_USERNAME
+        fromService: db
+      - key: DB_PASSWORD
+        fromService: db
+
+      # Cache / Session (usa el storage local, suficiente para la fase inicial)
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
